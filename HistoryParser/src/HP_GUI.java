@@ -12,10 +12,19 @@ public class HP_GUI {
 	private int grid_row = 2;					//number of rows for UI
 	private int grid_col = 1;					//number of columns for UI
 	
+	//list of labels
 	private String filename_label = "File Name";
 	private String sitename_label = "Site Name";
 	private String siteindex_label = "Site Index";
 	private String execute_button_label = "Get Site List";
+	
+	//list of error messages
+	private String not_a_number = "ERROR:\nPlease write a number for the index\nIt should be a positive number";
+	private String no_file_found = "ERROR:\nNo such file exists!/n"
+			+ "Make sure file names is correct\n"
+			+ "or that file is in the same directory as executable";
+	private String no_site_name_found = "ERROR:\nThe site you have given doesn't match any of the sites in the file!";
+	private String index_out_of_bounds = "ERROR:\nThe number you put in is too large!";
 	
 	private JPanel firstRow;					//Holds the first row which will hold the message box
 		
@@ -41,7 +50,6 @@ public class HP_GUI {
 		
 		
 		HistoryParserFrame.setVisible(true);
-		
 		
 	}//end constructor
 	
@@ -160,5 +168,26 @@ public class HP_GUI {
 		HistoryParserFrame.add(secondRow);
 		
 	}//end initializeDisplay()
+	
+	private void indexNotNumber() {
+		
+		messageBoard.setText(not_a_number);
+		
+	}//end indexNotNumber
+	
+	private void displayNoFileError() {
+		messageBoard.setText(no_file_found);
+	}//end diplayNoFileError()
+	
+	private void displyNoSiteError() {
+		messageBoard.setText(no_site_name_found);
+	}//end diaplyNoSiteError()
+	
+	private void indexOutofBounds() {
+		messageBoard.setText(index_out_of_bounds);
+	}//end indexOutofBounds()
+	
+	
+	
 	
 }//end HP_GUI
