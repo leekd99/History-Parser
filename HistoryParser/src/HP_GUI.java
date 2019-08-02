@@ -19,8 +19,9 @@ public class HP_GUI {
 	private String execute_button_label = "Get Site List";
 	
 	//list of error messages
-	private String not_a_number = "ERROR:\nPlease write a number for the index\nIt should be a positive number";
-	private String no_file_found = "ERROR:\nNo such file exists!/n"
+	private String not_a_number = "Please write a number for the index\n";
+	private String not_valid_number = "It should be a positive number\n";
+	private String no_file_found = "ERROR:\nNo such file exists!\n"
 			+ "Make sure file names is correct\n"
 			+ "or that file is in the same directory as executable";
 	private String no_site_name_found = "ERROR:\nThe site you have given doesn't match any of the sites in the file!";
@@ -99,6 +100,7 @@ public class HP_GUI {
 		
 		//set button
 		execute = new JButton(execute_button_label);
+		execute.addActionListener(actionListener);
 
 		//add filename prompt
 		firstRowConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -187,7 +189,84 @@ public class HP_GUI {
 		messageBoard.setText(index_out_of_bounds);
 	}//end indexOutofBounds()
 	
+	/*
+	 * Action listners to handle iunteraction with UI
+	 */
+	ActionListener actionListener = new ActionListener() {
+		
+		public void actionPerformed(ActionEvent event) {
+			
+			if (event.getSource() == execute) {
+				
+				IndexParams currentIndex = indexValid(getSiteIndex());
+				ErrorMessagePiece indexError = indexErrorMessage(currentIndex);
+				
+				if (indexError.exists()) {
+					
+					messageBoard.setText(indexError.getErrorMessage());
+					
+				} else {
+					messageBoard.setText("Good Job Kyle!!");
+					messageBoard.append("\ntest");
+				}//end
+				
+			}//end if
+			
+		}//end actionPerformed
+		
+	};//end action listener
 	
+	/*
+	 * Methods for getting info from inputs
+	 */
+	private String getFileName() {
+		return filenameInput.getText();
+	}//end getFilename
 	
+	private String getSiteName() {
+		return sitenameInput.getText();
+	}//end getFileName
+	
+	private String getSiteIndex() {
+		return siteindexInput.getText();
+	}//end
+	
+	/*
+	 * Check function for checking input
+	 */
+	private IndexParams indexValid(String indexInput) {
+		
+		IndexParams temp; 
+		
+		try {
+			temp = new IndexParams(Integer.parseInt(indexInput),true); 
+		} catch(NumberFormatException e) {
+			temp = new IndexParams(0,false); 
+		}
+		
+		return temp;
+		
+	}//end indexValid(String indexInput)
+	
+	private ErrorMessagePiece indexErrorMessage(IndexParams currentIndexParams) {
+		
+		ErrorMessagePiece temp = new ErrorMessagePiece();
+		
+		IndexParams currentIndex = indexValid(getSiteIndex());
+		
+		if (!currentIndex.isInteger()) {
+			temp.addToMessage(not_a_number);
+		}//if index is not an integer
+		
+		if (!currentIndex.isCorrect()) {
+			temp.addToMessage(not_valid_number);
+		}//if index is not a valid number
+		
+		return temp;
+		
+		//messageBoard.setText(message);
+		//System.out.println("Value: " + currentIndex.getValue() + "\nisInt: " + currentIndex.isInteger() + "\nisValid: " + currentIndex.isCorrect());
+		
+	}//end indexErrorMessage()
 	
 }//end HP_GUI
